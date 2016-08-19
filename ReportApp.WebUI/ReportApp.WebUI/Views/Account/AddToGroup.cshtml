@@ -1,0 +1,63 @@
+﻿@model ReportApp.WebUI.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "Dodaj";
+}
+
+<h2>Dodaj </h2>
+@using (Html.BeginForm())
+{
+<div>
+    <h4>do grupy i stanowiska</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumerIndeksu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumerIndeksu)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nr_grupy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nr_grupy) 
+            @Html.DropDownList("Nr_grupy", "Wybierz")
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Nr_stanowiska)
+          
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nr_stanowiska)
+            @Html.EditorFor(model => model.Nr_stanowiska)
+        </dd>
+        
+    </dl>
+</div>
+    @Html.HiddenFor(model=>model.Nr_grupy)
+    @Html.HiddenFor(model => model.Id)
+<p>
+    <input type="submit" value="Zatwierdź" class="btn btn-default" />
+</p>
+}

@@ -1,0 +1,84 @@
+﻿@model ReportApp.Domain.Entities.Event
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm("Edit", "Event", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Event</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.EventID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NazwaSpraw, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NazwaSpraw, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NazwaSpraw, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+      
+
+          <div class="form-group">
+            @Html.LabelFor(model => model.PrzedmiotID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("PrzedmiotID", "Wybierz przedmiot") lub @Html.ActionLink("dodaj", "Create", "Subject")
+            </div>
+        </div>
+
+
+        @if (Model.Instrukcja.IsEmpty())
+        {
+            <input type="file" name="file" class="custom-file-input">
+            <br>
+        }
+        else
+        {  <a href="@Url.Content(Model.Instrukcja)">@Html.DisplayFor(model => model.NazwaSpraw)</a>
+            @Html.ActionLink("Usuń bieżącą instrukcje", "DeleteFile", new { id = Model.EventID })
+            <br><br>
+        }
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DataPoczatku, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DataPoczatku, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DataPoczatku, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DataKonca, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DataKonca, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DataKonca, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EventforGroup, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("EventforGroup", "Wybierz grupe")
+            </div>
+        </div>
+        @Html.HiddenFor(model => model.ProwadzacyID)
+        @Html.HiddenFor(model => model.Instrukcja)
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+
+<div>
+    @Html.ActionLink("Powróć do listy", "List")
+</div>

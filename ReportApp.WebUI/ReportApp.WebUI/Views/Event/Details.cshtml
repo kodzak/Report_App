@@ -1,0 +1,178 @@
+﻿@model ReportApp.Domain.Entities.Event
+
+@{
+    ViewBag.Title = "Szczegóły" ;
+}
+@if (Html.Action("GetUserGr", "Account", new { name = User.Identity.Name.ToString() }).ToString() == Model.EventforGroup.ToString() || User.IsInRole("Administrator") || User.IsInRole("Prowadzący"))
+{
+<h4>@Html.DisplayFor(model => model.NazwaSpraw)</h4>
+<hr />
+
+
+    using (Html.BeginForm("Create", "Event", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.PrzedmiotID)
+            </dt>
+
+            <dd>
+                @Html.Action("NazwaPrzedmiotu", new { id = Model.PrzedmiotID }).ToString()
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.EventforGroup)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.EventforGroup)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ProwadzacyID)
+            </dt>
+            <dd>
+                @Html.Action("nazwauzytkownika", new { id = Model.ProwadzacyID }).ToString()
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Instrukcja)
+            </dt>
+
+            <dd>
+                <a href="@Url.Content(Model.Instrukcja)">@Html.DisplayFor(model => model.NazwaSpraw)</a>
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DataPoczatku)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DataPoczatku)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DataKonca)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DataKonca)
+            </dd>
+
+            </dl>
+            
+            <table class="table">
+                @if(Model.Reports.Any())
+                { 
+                <tr>
+                    <th>
+                        Imię i Nazwisko studenta
+                    </th>
+                    <th>
+                        Plik
+                    </th>
+                    <th>
+                        Ocena
+                    </th>
+                    <th>
+                        Data Dodania
+                    </th>
+
+                    <th></th>
+                </tr>
+                }
+                @foreach (var report in Model.Reports)
+                {
+                    if (User.IsInRole("Administrator") || User.IsInRole("Prowadzący") || (User.IsInRole("Student") && (report.UserID == (Html.Action("GetUserID", "Account", new { name = User.Identity.Name.ToString() }).ToString()))))
+                    {
+
+                        <tr>
+                            <td>
+                                @Html.Action("nazwauzytkownika", new { id = report.UserID }).ToString()
+                            </td>
+                            <td>
+                                <a href="@Url.Content(report.File)">@Html.DisplayFor(model => model.NazwaSpraw)</a>
+                            </td>
+                            @if (report.Ocena > 1)
+                            {
+                            <td>
+                                @report.Ocena
+                            </td>
+                            }
+                            else
+                            {
+                            <td>
+                                Nieoceniono
+                            </td>
+                            }
+                            <td>
+                                @report.DataDodania
+                            </td>
+                            <td>
+                                @if (User.IsInRole("Administrator") || User.IsInRole("Prowadzący"))
+                                {
+                                <td>
+                                    @Html.ActionLink("Oceń", "Ocen", "Report", new { id = report.SprawID }, null)
+                                </td>
+                                    }
+                        </tr>
+                }
+                }
+                
+                                
+                </table>
+    @Html.HiddenFor(model => model.EventID)
+    @Html.HiddenFor(model => model.NazwaSpraw)
+    @Html.HiddenFor(model => model.ProwadzacyID)
+    @Html.HiddenFor(model => model.PrzedmiotID)
+    @Html.HiddenFor(model => model.Instrukcja)
+    @Html.HiddenFor(model => model.DataPoczatku)
+    @Html.HiddenFor(model => model.DataKonca)
+    @Html.HiddenFor(model => model.EventforGroup)
+    <dl class="dl-horizontal">
+@if (User.IsInRole("Student"))
+ { 
+        if (DateTime.Today.Date >= Model.DataPoczatku && DateTime.Today.Date <= Model.DataKonca)
+        { 
+        <dt>
+           Sprawozdanie
+        </dt>
+        <dd>
+            <input type="file" name="file" class="custom-file-input">
+        </dd>
+    <dt>
+        <br />
+        <input type="submit" name="dodajplik" value="Dodaj sprawozdanie" id="dodajplik" class="btn btn-default" />
+        <br />
+    </dt>
+        }
+        else if (DateTime.Today.Date < Model.DataPoczatku)
+        {
+            <dd>
+                <h4>Jeszcze nie można oddawać sprawozdań!</h4>
+            </dd>
+        }
+     else
+        { 
+    <dd>
+        <h4>Termin oddawania minął!</h4>
+    </dd>
+        }
+        
+        }
+     </dl>
+}
+}
+
+
+
+        <p>
+            @if (User.IsInRole("Administrator") || User.IsInRole("Prowadzący"))
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = Model.EventID })
+                @Html.ActionLink("Delete", "Delete", new { id = Model.EventID })
+
+            }
+
+            @Html.ActionLink("Powróć do listy", "List")
+        </p>
+        @section Scripts {
+                @Scripts.Render("~/Scripts/raports/raports.js")
+            }

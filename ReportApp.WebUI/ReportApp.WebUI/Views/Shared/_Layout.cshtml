@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Internetowy system wspomagający gromadzenie i rozliczanie prac oraz zajęć</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    
+    <script type="text/javascript" src="~/Scripts/jquery.js"></script>
+    <script type="text/javascript" src="~/Scripts/menu.js"></script>
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Internetowy system wspomagający gromadzenie i rozliczanie prac oraz zajęć", "List", "Event", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="menubar">
+                    <li>
+                        @Html.ActionLink("Student", "List", "Event")
+                        <ul>
+                            <li>@Html.ActionLink("Wydarzenia", "List", "Event")</li>
+                            <li>@Html.ActionLink("Moje oceny", "OcenList", "Report")</li>
+                         </ul>
+                            @if (User.IsInRole("Administrator") || User.IsInRole("Prowadzący"))
+                            {
+                                <li>
+                                    @Html.ActionLink("Prowadzacy", "List", "Event")
+                                    <ul>
+                                        <li>@Html.ActionLink("Lista wydarzeń", "List", "Event")</li>
+                                        <li>@Html.ActionLink("Lista raportów", "List", "Report")</li>
+                                        <li>@Html.ActionLink("Lista przedmiotów", "List", "Subject")</li>
+                                        <li>@Html.ActionLink("Dodaj do grupy", "ShowStudents", "Account")</li>
+
+                                    </ul>
+                                </li>
+                            }
+                            @if (User.IsInRole("Administrator"))
+                            {
+                                <li>
+                                    @Html.ActionLink("Administrator", "List", "Event")
+                                    <ul>
+                                        <
+                                        <li>@Html.ActionLink("Lista użytkowników", "ShowUsers", "Account")</li>
+                                    </ul>
+                                </li>
+                            }
+
+
+                        </ul>
+
+
+                        @Html.Partial("_LoginPartial")
+</div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <div class="stopka">
+                    <footer>
+                        <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+                    </footer>
+                    </div>
+                </div>
+ 
+
+                @Scripts.Render("~/bundles/jquery")
+                @Scripts.Render("~/bundles/bootstrap")
+                @RenderSection("scripts", required: false)
+</body>
+</html>

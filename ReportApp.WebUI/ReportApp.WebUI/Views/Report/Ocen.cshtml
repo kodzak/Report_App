@@ -1,0 +1,73 @@
+﻿@model ReportApp.Domain.Entities.Report
+
+@{
+    ViewBag.Title = "Ocen sprawozdanie";
+}
+
+<h2>Oceń</h2>
+
+<div>
+    <h4>Sprawozdanie</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UserID)
+        </dt>
+
+        <dd>
+            @Html.Action("nazwauzytkownika", new { id = Model.UserID }).ToString()
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.File)
+        </dt>
+
+        <dd>
+            <a href="@Url.Content(Model.File)">Plik</a>
+        </dd>
+        <dt>
+<dt>
+            @Html.DisplayNameFor(model => model.Ocena)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ocena)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DataDodania)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DataDodania)
+        </dd>
+        <dt>
+            Oceń
+        </dt>
+   @using (Html.BeginForm())
+{
+        <dd>
+            @Html.DropDownListFor(model=>model.Ocena, new List<SelectListItem>
+
+                 {
+                    new SelectListItem{ Text="2", Value = "2" },
+                    new SelectListItem{ Text="3", Value = "3" },
+                      new SelectListItem{ Text="4", Value = "4" },
+                        new SelectListItem{ Text="5", Value = "5" }
+
+                 })
+          
+            @Html.HiddenFor(model => model.EventID)
+            @Html.HiddenFor(model => model.DataDodania)
+            @Html.HiddenFor(model => model.File)
+            @Html.HiddenFor(model => model.SprawID)
+            @Html.HiddenFor(model => model.UserID)
+            <input type="submit" value="Ocena" class="btn btn-default" />
+        </dd>
+   }    
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Powróć do listy", "Details", "Event", new { id =Model.EventID}, null)
+</p>

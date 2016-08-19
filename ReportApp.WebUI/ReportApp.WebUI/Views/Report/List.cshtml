@@ -1,0 +1,81 @@
+﻿@model ReportApp.WebUI.Models.ReportsListViewModel
+@{
+    ViewBag.Title = "Lista raportów";
+}
+
+<h2>Lista wszystkich sprawozdań</h2>
+@using (Html.BeginForm("List", "Report", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+@Html.Label("Wybierz przedmiot:")@Html.DropDownList("PrzedmiotID", "Wybierz wszystkie") <input type="submit" value="Select" class="btn btn-default" />
+}
+
+<table class="table">
+    @if (Model.Reports.Any())
+    {
+        <tr>
+            <th>
+                Imię i Nazwisko studenta
+            </th>
+            <th>
+               Nazwa przedmiotu
+            </th>
+            <th>
+                Plik
+            </th>
+            <th>
+                Ocena
+            </th>
+            <th>
+                Data Dodania
+            </th>
+
+            <th></th>
+        </tr>
+    }
+    @foreach (var report in Model.Reports)
+    {
+        if (User.IsInRole("Administrator") || User.IsInRole("Prowadzący") || (User.IsInRole("Student") && (report.UserID == (Html.Action("GetUserID", "Account", new { name = User.Identity.Name.ToString() }).ToString()))))
+        {
+
+            <tr>
+                <td>
+                    @Html.Action("nazwauzytkownika", new { id = report.UserID }).ToString()
+                </td>
+                <td>
+                    @Html.Action("NazwaPrzedmiotu", new { id = report.PrzedmiotID }).ToString()
+                </td>
+                <td>
+                    <a href="@Url.Content(report.File)">@Html.Action("nazwasprawozdania", new { id = report.EventID }).ToString()</a>
+                </td>
+                @if (report.Ocena > 1)
+                {
+                    <td>
+                        @report.Ocena
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        Nieoceniono
+                    </td>
+                }
+                <td>
+                    @report.DataDodania
+                </td>
+                <td>
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Prowadzący"))
+                    {
+                    <td>
+                        @Html.ActionLink("Oceń", "Ocen", "Report", new { id = report.SprawID }, null)
+                    </td>
+                    }
+                </tr>
+        }
+    }
+
+
+</table>
+
+    <div class="pager">
+        @Html.PageLinks(Model.PagingInfo, x => Url.Action("List", new { page = x, events = Model.CurrentEvent }))
+    </div>

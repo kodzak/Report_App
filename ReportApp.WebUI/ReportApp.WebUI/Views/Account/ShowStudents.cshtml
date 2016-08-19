@@ -1,0 +1,50 @@
+﻿@model IEnumerable<ReportApp.WebUI.Models.UserListItemViewModel>
+
+@{
+    ViewBag.Title = "Lista Studentów";
+}
+@using (Html.BeginForm())
+{
+<h2>Lista Studentów</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nr_grupy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nr_stanowiska)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nr_grupy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nr_stanowiska)
+        </td>
+        <td>
+            @Html.ActionLink("Dodaj do grupy i stanowiska", "AddToGroup", new { id = item.Id })
+           </td>
+      
+    </tr>
+}
+
+</table>
+    
+}

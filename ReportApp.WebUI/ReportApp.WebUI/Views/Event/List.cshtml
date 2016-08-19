@@ -1,0 +1,78 @@
+﻿@model IEnumerable<ReportApp.WebUI.Models.EventsListViewModel>
+@{
+    ViewBag.Title = "Wydarzenia";
+}
+@if (Request.IsAuthenticated && (User.IsInRole("Prowadzący") || User.IsInRole("Administrator")))
+{
+    <p style="margin-top:20px;">
+        @Html.ActionLink("Stwórz nowe wydarzenie", "CreateEvent")
+    </p>
+}
+
+    @using (Html.BeginForm("List", "Event", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    { 
+    <p style="margin:0 0 20px 0;">
+        @Html.Label("Wybierz przedmiot:")
+        @Html.DropDownList("PrzedmiotID", "Wybierz wszystkie") <input type="submit" value="Wybierz" class="btn btn-default" />
+    </p>
+     }
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.NazwaSpraw)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NazwaPrzedmiotu)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EventforGroup)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProwadzacyID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataPoczatku)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataKonca)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var p in Model)
+              {
+              if (Html.Action("GetUserGr", "Account", new { name = User.Identity.Name.ToString() }).ToString() == p.EventforGroup.ToString() || User.IsInRole("Administrator") || User.IsInRole("Prowadzący"))
+              {
+             <tr>
+                <td>
+                    @Html.DisplayFor(model => p.NazwaSpraw)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => p.NazwaPrzedmiotu)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => p.EventforGroup)
+                </td>
+                <td>
+                    @Html.Action("nazwauzytkownika", new { id = p.ProwadzacyID }).ToString()
+                </td>
+                <td>
+                    @Html.DisplayFor(model => p.DataPoczatku)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => p.DataKonca)
+                </td>
+                <td>
+                    @Html.ActionLink("Szczegóły", "Details", new { id = p.EventID })
+                </td>
+            </tr>
+      }
+      }
+
+        </table>
+
+
+
+
+
+

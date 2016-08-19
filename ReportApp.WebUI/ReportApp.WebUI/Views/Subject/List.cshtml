@@ -1,0 +1,32 @@
+﻿@model IEnumerable<ReportApp.Domain.Entities.Subjects>
+
+@{
+    ViewBag.Title = "Lista przedmiotów";
+}
+
+<h2>Lista przedmiotów</h2>
+
+<p>
+    @Html.ActionLink("Utwórz nowy", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nazwa)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nazwa)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.PrzedmiotID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.PrzedmiotID })
+        </td>
+    </tr>
+}
+
+</table>

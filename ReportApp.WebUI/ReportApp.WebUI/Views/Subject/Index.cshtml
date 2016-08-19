@@ -1,0 +1,41 @@
+﻿@model ReportApp.WebUI.Models.SubjectListViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+@using (Html.BeginForm())
+{
+
+<table class="table">
+    <tr>
+       
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Subjects )
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nazwa)
+            </td>
+            <td>
+               <input id="item@(item.PrzedmiotID)"
+                       type="checkbox"
+                       name="SelectedPrzedmiotIDs"
+                       value="@item.PrzedmiotID"
+                       @*@(Model.SelectedPrzedmiotIDs.Contains(item.PrzedmiotID) ? "checked" : "")*@ />
+                       
+            </td>
+        </tr>
+    }
+    
+</table>
+
+    <input type="submit" value="Submit" />
+}
+<p>
+    <br />
+  @Html.ActionLink("Utworz nowy przedmiot","Create")
+</p>

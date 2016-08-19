@@ -1,0 +1,63 @@
+﻿@model ReportApp.Domain.Entities.Report
+
+    @if (User.IsInRole("Administrator") || User.IsInRole("Prowadzący"))
+    {
+        
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => Model.UserID)
+            </dt>
+            <dd>
+                @Html.Action("nazwauzytkownika", new { id = Model.UserID }).ToString()
+            </dd>
+            <dt>
+               Przedmiot
+            </dt>
+            <dd>
+                @Html.Action("NazwaPrzedmiotu", new { id = Model.PrzedmiotID }).ToString()
+            </dd>
+            <dt>
+                Grupa i stanowisko
+            </dt>
+            <dd>
+                @Html.Action("Numergrupy_stanow", new { id = Model.UserID }).ToString()
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => Model.File)
+            </dt>
+            <dd>
+                <a href="@Url.Content(Model.File)">PLIK</a>
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => Model.Ocena)
+            </dt>
+            @if (Model.Ocena > 1)
+            {
+            <dd>
+                @Model.Ocena
+            </dd>
+            }
+            else
+            {
+            <dd>
+                Nieoceniono
+            </dd>
+            }
+            @if (User.IsInRole("Administrator") || User.IsInRole("Prowadzący"))
+            {
+            <dd>
+                @Html.ActionLink("Oceń", "Ocen", "Report", new { id = Model.SprawID }, null)
+            </dd>
+            }
+            <dt>
+                @Html.DisplayNameFor(model => Model.DataDodania)
+            </dt>
+            <dd>
+                @Model.DataDodania
+            </dd>
+            
+        </dl>
+        <hr />
+    }
+    
+

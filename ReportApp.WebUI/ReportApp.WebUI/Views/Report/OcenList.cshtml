@@ -1,0 +1,47 @@
+﻿@model IEnumerable<ReportApp.Domain.Entities.Report>
+@{
+    ViewBag.Title = "Moje oceny";
+}
+
+<h2>Lista ocen ze wszystkich przedmiotów</h2>
+<table class="table">
+    <tr>
+        <th>
+            Nazwa Sprawozdania
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PrzedmiotID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ocena)
+        </th>
+
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.Action("nazwasprawozdania", new { id = item.EventID })
+        </td>
+        <td>
+            @Html.Action("NazwaPrzedmiotu", new { id = item.PrzedmiotID }).ToString()
+        </td>
+        @if (item.Ocena > 1)
+        {
+            <td>
+                @item.Ocena
+            </td>
+        }
+        else
+        {
+            <td>
+                Nieoceniono
+            </td>
+        }
+       
+       
+    </tr>
+}
+
+</table>

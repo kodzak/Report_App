@@ -1,4 +1,4 @@
-# Report_App
+# System supporting the gathering and settlement of work and courses
 System supporting the gathering and settlement of work and courses
 
 Internetowy system wspomagający gromadzenie i rozliczanie prac i zajęć
